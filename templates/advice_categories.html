@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Advice Categories</h2>
+	<p style="opacity:0.9;">Select a topic to receive curated, scenario-based guidance from Vira Sky.</p>
+
+	<div class="grid" style="margin-top:12px;">
+		{% if categories %}
+			{% for c in categories %}
+			<a class="tool" href="{{ url_for('explore_advice_detail', category_id=c.id) }}" style="display:block;">
+				<strong>{{ c.title }}</strong>
+				<div style="opacity:0.8;">{{ c.desc }}</div>
+			</a>
+			{% endfor %}
+		{% else %}
+			<p style="opacity:0.7;">No categories available.</p>
+		{% endif %}
+	</div>
+
+	<div style="margin-top:12px;">
+		<small style="opacity:0.8;">Tip: You can change tone and depth in Settings → App Behavior. Advice adapts to your preferences.</small>
+	</div>
+</div>
+{% endblock %}

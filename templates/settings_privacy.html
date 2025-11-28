@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Privacy</h2>
+	<p style="opacity:0.9;">Manage how your data is stored and shared.</p>
+
+	<div style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">
+		<label><input type="checkbox" id="store_chats" {{ 'checked' if privacy.store_chats else '' }}> Store chat history (helps personalization)</label>
+		<label><input type="checkbox" id="export_allowed" {{ 'checked' if privacy.export_allowed else '' }}> Allow data export</label>
+		<label><input type="checkbox" id="app_lock" {{ 'checked' if privacy.app_lock else '' }}> Require app lock (PIN/biometric)</label>
+
+		<div style="margin-top:8px;">
+			<button onclick="savePrivacy()" style="padding:8px 12px;">Save Privacy Settings</button>
+			<span id="privacyMsg" style="margin-left:8px; opacity:0.85;"></span>
+		</div>
+	</div>
+</div>
+
+<script>
+function savePrivacy(){
+	// Placeholder: send new privacy settings to backend endpoint (implement /api/settings/privacy)
+	document.getElementById('privacyMsg').textContent = 'Saved (placeholder)';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Safety</h2>
+	<p style="opacity:0.9;">Ensure emotionally safe, responsible AI guidance.</p>
+
+	<div style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">
+		<label><input type="checkbox" id="filters_enabled" {{ 'checked' if safety.filters_enabled else '' }}> Enable emotional safety filters</label>
+		<label><input type="checkbox" id="restrict_topics" {{ 'checked' if safety.sensitive_topics_restricted else '' }}> Restrict sensitive topics</label>
+
+		<div style="margin-top:8px;">
+			<button onclick="saveSafety()" style="padding:8px 12px;">Save Safety Settings</button>
+			<span id="safetyMsg" style="margin-left:8px; opacity:0.85;"></span>
+		</div>
+	</div>
+</div>
+
+<script>
+function saveSafety(){
+	// Placeholder: implement /api/settings/safety to persist changes
+	document.getElementById('safetyMsg').textContent = 'Saved (placeholder)';
+}
+</script>
+{% endblock %}

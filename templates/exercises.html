@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Exercises</h2>
+	<p style="opacity:0.9;">AI-guided bonding and self-growth activities.</p>
+
+	<div id="exerciseList" class="grid" style="margin-top:12px;"></div>
+</div>
+
+<script>
+async function loadExercises(){
+	const resp = await fetch('/api/exercises');
+	const data = await resp.json();
+	const list = document.getElementById('exerciseList');
+	list.innerHTML = '';
+	(data.exercises || []).forEach(e=>{
+		const el = document.createElement('div');
+		el.className = 'tool';
+		el.innerHTML = `<strong>${e.title}</strong><div style="opacity:0.85;">${e.desc}</div>`;
+		list.appendChild(el);
+	});
+}
+loadExercises();
+</script>
+{% endblock %}

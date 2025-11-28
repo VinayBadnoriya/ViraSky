@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">18+ Controls</h2>
+	<p style="opacity:0.9;">Enable respectful intimate conversational tone only after age verification.</p>
+
+	<div style="margin-top:12px;">
+		<p>Age verified: <strong>{{ 'Yes' if controls.age_verified else 'No' }}</strong></p>
+		<label><input type="checkbox" id="enable_18" {{ 'checked' if controls.enabled else '' }} {{ 'disabled' if not controls.age_verified else '' }}> Enable 18+ conversational mode</label>
+
+		<div style="margin-top:10px;">
+			<button onclick="verifyAge()" style="padding:8px 12px;">Verify Age (placeholder)</button>
+			<button onclick="save18()" style="padding:8px 12px; margin-left:8px;">Save</button>
+			<span id="msg18" style="margin-left:8px; opacity:0.85;"></span>
+		</div>
+
+		<p style="margin-top:12px; opacity:0.85;">Note: This mode keeps conversations emotionally intimate but prevents explicit/lewd content per safety engine.</p>
+	</div>
+</div>
+
+<script>
+function verifyAge(){
+	// Placeholder: open verification flow; on success re-enable checkbox
+	document.getElementById('msg18').textContent = 'Age verification (placeholder) - set to verified in demo';
+	// In a real app, after verification reload or update controls via API
+}
+function save18(){
+	document.getElementById('msg18').textContent = 'Saved (placeholder)';
+}
+</script>
+{% endblock %}

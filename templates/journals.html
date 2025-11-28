@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Journals</h2>
+	<p style="opacity:0.9;">Write an entry and let Vira Sky summarize your feelings and detect mood.</p>
+
+	<textarea id="journalText" rows="8" style="width:100%; padding:8px;" placeholder="Write your thoughts..."></textarea>
+	<div style="margin-top:8px;">
+		<button onclick="submitJournal()" style="padding:8px 12px;">Summarize & Analyze</button>
+	</div>
+
+	<div style="margin-top:12px;">
+		<h4>Summary</h4>
+		<pre id="journalSummary" style="white-space:pre-wrap; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+		<h4 style="margin-top:12px;">Mood</h4>
+		<pre id="journalMood" style="white-space:pre-wrap; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+	</div>
+
+	<div style="height:18px;"></div>
+
+	<div class="card" style="padding:12px;">
+		<h3 style="margin-top:0;">Previous Entries</h3>
+		<div id="entriesList" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+		<h4 style="margin-top:12px;">Weekly Summary</h4>
+		<pre id="weeklySummary" style="white-space:pre-wrap; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+	</div>
+</div>
+
+<script>
+async function submitJournal(){
+	const text = document.getElementById('journalText').value;
+	if(!text) return;
+	document.getElementById('journalSummary').textContent = 'Analyzing...';
+	const resp = await fetch('/api/journal', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text})});
+	const data = await resp.json();
+	document.getElementById('journalSummary').textContent = data.summary.summary || '[No summary]';
+
+	const moodResp = await fetch('/api/mood', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text})});
+	const moodData = await moodResp.json();
+	document.getElementById('journalMood').textContent = JSON.stringify(moodData.mood, null, 2);
+
+	// Optionally reload entries after saving (placeholder behavior)
+	loadJournals();
+}
+
+async function loadJournals(){
+	const resp = await fetch('/api/journals');
+	const data = await resp.json();
+	const list = document.getElementById('entriesList');
+	list.innerHTML = '';
+	(data.entries || []).forEach(e=>{
+		const el = document.createElement('div');
+		el.style.padding = '10px';
+		el.style.borderRadius = '8px';
+		el.style.background = 'rgba(0,0,0,0.02)';
+		el.innerHTML = `<strong>${e.date}</strong><div style="opacity:0.9; margin-top:6px;">${e.summary}</div>`;
+		list.appendChild(el);
+	});
+	document.getElementById('weeklySummary').textContent = JSON.stringify(data.weekly_summary || {}, null, 2);
+}
+
+loadJournals();
+</script>
+{% endblock %}

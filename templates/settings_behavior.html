@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">App Behavior Settings</h2>
+	<p style="opacity:0.9;">Customize Vira Sky's personality, response depth and notifications.</p>
+
+	<div style="display:flex; flex-direction:column; gap:12px; margin-top:12px; max-width:560px;">
+		<label>Personality Tone:
+			<select id="tone">
+				<option value="soft" {{ 'selected' if behavior.tone=='soft' else '' }}>Soft</option>
+				<option value="friendly" {{ 'selected' if behavior.tone=='friendly' else '' }}>Friendly</option>
+				<option value="coach" {{ 'selected' if behavior.tone=='coach' else '' }}>Strict Coach</option>
+				<option value="motivational" {{ 'selected' if behavior.tone=='motivational' else '' }}>Motivational</option>
+			</select>
+		</label>
+
+		<label>Response Depth:
+			<select id="depth">
+				<option value="short" {{ 'selected' if behavior.depth=='short' else '' }}>Short</option>
+				<option value="medium" {{ 'selected' if behavior.depth=='medium' else '' }}>Medium</option>
+				<option value="deep" {{ 'selected' if behavior.depth=='deep' else '' }}>Deep</option>
+			</select>
+		</label>
+
+		<label><input type="checkbox" id="notif_daily" {{ 'checked' if behavior.notifications.daily else '' }}> Daily affirmation notification</label>
+
+		<div>
+			<button onclick="saveBehavior()" style="padding:8px 12px;">Save Behavior Settings</button>
+			<span id="behaviorMsg" style="margin-left:8px; opacity:0.85;"></span>
+		</div>
+	</div>
+</div>
+
+<script>
+function saveBehavior(){
+	// Placeholder: send selected options to backend (/api/settings/behavior)
+	document.getElementById('behaviorMsg').textContent = 'Saved (placeholder)';
+}
+</script>
+{% endblock %}

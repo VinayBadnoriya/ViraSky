@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">User Data</h2>
+	<p style="opacity:0.9;">Manage your basic profile information.</p>
+
+	<form id="userDataForm" onsubmit="return false;" style="display:flex; flex-direction:column; gap:12px; max-width:400px; margin-top:12px;">
+		<label>Name:
+			<input type="text" id="name" value="{{ user_data.name }}" style="width:100%; padding:6px; margin-top:4px;" />
+		</label>
+
+		<label>Age:
+			<input type="number" id="age" value="{{ user_data.age or '' }}" style="width:100%; padding:6px; margin-top:4px;" placeholder="Optional" />
+		</label>
+
+		<label>Relationship Status:
+			<select id="relationship_status" style="width:100%; padding:6px; margin-top:4px;">
+				<option value="Single" {% if user_data.relationship_status=='Single' %}selected{% endif %}>Single</option>
+				<option value="In a Relationship" {% if user_data.relationship_status=='In a Relationship' %}selected{% endif %}>In a Relationship</option>
+				<option value="Married" {% if user_data.relationship_status=='Married' %}selected{% endif %}>Married</option>
+				<option value="Divorced" {% if user_data.relationship_status=='Divorced' %}selected{% endif %}>Divorced</option>
+				<option value="Prefer not to say" {% if user_data.relationship_status=='Prefer not to say' %}selected{% endif %}>Prefer not to say</option>
+			</select>
+		</label>
+
+		<label>Avatar:
+			<p style="opacity:0.85; font-size:13px;">Upload or manage your avatar in Explore → Avatar Generation</p>
+		</label>
+
+		<div>
+			<button onclick="saveUserData()" style="padding:8px 12px;">Save User Data</button>
+			<span id="userDataMsg" style="margin-left:8px; opacity:0.85;"></span>
+		</div>
+	</form>
+</div>
+
+<script>
+async function saveUserData(){
+	const payload = {
+		name: document.getElementById('name').value,
+		age: document.getElementById('age').value || null,
+		relationship_status: document.getElementById('relationship_status').value
+	};
+	const resp = await fetch('/api/profile/user-data', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+	const data = await resp.json();
+	document.getElementById('userDataMsg').textContent = data.message || 'Saved';
+}
+</script>
+{% endblock %}

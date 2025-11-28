@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Settings</h2>
+	<p style="opacity:0.9;">Control privacy, safety, 18+ behavior and Vira Sky's personality.</p>
+
+	<div class="grid" style="margin-top:12px;">
+		<a class="tool" href="{{ url_for('settings_privacy') }}" style="display:block;">
+			<strong>Privacy</strong>
+			<div style="opacity:0.8;">Manage chat storage, exports, app lock & visibility</div>
+		</a>
+
+		<a class="tool" href="{{ url_for('settings_safety') }}" style="display:block;">
+			<strong>Safety</strong>
+			<div style="opacity:0.8;">Emotion-safety filters & sensitive-topic restrictions</div>
+		</a>
+
+		<a class="tool" href="{{ url_for('settings_18plus') }}" style="display:block;">
+			<strong>18+ Controls</strong>
+			<div style="opacity:0.8;">Enable respectful intimate tone after age verification</div>
+		</a>
+
+		<a class="tool" href="{{ url_for('settings_behavior') }}" style="display:block;">
+			<strong>App Behavior Settings</strong>
+			<div style="opacity:0.8;">Customize Vira Sky's tone, response depth & notifications</div>
+		</a>
+	</div>
+</div>
+{% endblock %}

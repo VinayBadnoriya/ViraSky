@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Preferences</h2>
+	<p style="opacity:0.9;">Customize how Vira Sky interacts with you.</p>
+
+	<form id="preferencesForm" onsubmit="return false;" style="display:flex; flex-direction:column; gap:12px; max-width:400px; margin-top:12px;">
+		<label>Personality Tone:
+			<select id="tone" style="width:100%; padding:6px; margin-top:4px;">
+				<option value="soft" {% if preferences.tone=='soft' %}selected{% endif %}>Soft</option>
+				<option value="friendly" {% if preferences.tone=='friendly' %}selected{% endif %}>Friendly</option>
+				<option value="coach" {% if preferences.tone=='coach' %}selected{% endif %}>Strict Coach</option>
+				<option value="motivational" {% if preferences.tone=='motivational' %}selected{% endif %}>Motivational</option>
+				<option value="romantic" {% if preferences.tone=='romantic' %}selected{% endif %}>Romantic (18+)</option>
+			</select>
+		</label>
+
+		<label>Chat Depth:
+			<select id="chat_depth" style="width:100%; padding:6px; margin-top:4px;">
+				<option value="short" {% if preferences.chat_depth=='short' %}selected{% endif %}>Short</option>
+				<option value="medium" {% if preferences.chat_depth=='medium' %}selected{% endif %}>Medium</option>
+				<option value="deep" {% if preferences.chat_depth=='deep' %}selected{% endif %}>Deep</option>
+			</select>
+		</label>
+
+		<label>Emotional Sensitivity:
+			<select id="emotional_sensitivity" style="width:100%; padding:6px; margin-top:4px;">
+				<option value="low" {% if preferences.emotional_sensitivity=='low' %}selected{% endif %}>Low (practical guidance)</option>
+				<option value="medium" {% if preferences.emotional_sensitivity=='medium' %}selected{% endif %}>Medium (balanced)</option>
+				<option value="high" {% if preferences.emotional_sensitivity=='high' %}selected{% endif %}>High (deeply empathetic)</option>
+			</select>
+		</label>
+
+		<div>
+			<button onclick="savePreferences()" style="padding:8px 12px;">Save Preferences</button>
+			<span id="preferencesMsg" style="margin-left:8px; opacity:0.85;"></span>
+		</div>
+	</form>
+
+	<p style="margin-top:12px; opacity:0.85; font-size:13px;">💡 Tip: These preferences affect all of Vira Sky's responses and emotional insights.</p>
+</div>
+
+<script>
+async function savePreferences(){
+	const payload = {
+		tone: document.getElementById('tone').value,
+		chat_depth: document.getElementById('chat_depth').value,
+		emotional_sensitivity: document.getElementById('emotional_sensitivity').value
+	};
+	const resp = await fetch('/api/profile/preferences', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+	const data = await resp.json();
+	document.getElementById('preferencesMsg').textContent = data.message || 'Saved';
+}
+</script>
+{% endblock %}

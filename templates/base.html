@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Vira Sky</title>
+	<style>
+		:root{
+			--bg-light:#f6f8ff; --card-light:#ffffff; --accent-light:#6dbaff; --text:#0c0f1f;
+			--bg-dark:#0c0f1f; --card-dark:rgba(255,255,255,0.03); --accent-dark:#8b6cff; --text-light:#f0f2ff;
+			--nav-height:64px;
+		}
+		html,body{margin:0;height:100%;}
+		body.light{background:var(--bg-light); color:var(--text); font-family:Inter,system-ui,Arial;}
+		body.dark{background:var(--bg-dark); color:var(--text-light); font-family:Inter,system-ui,Arial;}
+		.header{height:var(--nav-height); display:flex; align-items:center; gap:18px; padding:0 20px; box-sizing:border-box;}
+		.brand{font-weight:700; letter-spacing:0.4px;}
+		.nav{margin-left:20px; display:flex; gap:12px;}
+		.nav a{padding:8px 12px; border-radius:8px; text-decoration:none; color:inherit; opacity:0.9;}
+		.nav a.active{background:rgba(255,255,255,0.06); box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+		.container{max-width:1000px; margin:20px auto; padding:16px;}
+		.card{background:var(--card-light); padding:16px; border-radius:12px; box-shadow:0 6px 18px rgba(16,24,40,0.06);}
+		body.dark .card{background:var(--card-dark); box-shadow:none;}
+		.hero{display:flex; align-items:center; justify-content:space-between; gap:20px;}
+		.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:12px;}
+		.tool{padding:14px; border-radius:10px; background:rgba(255,255,255,0.03); text-decoration:none; color:inherit; display:block; transition:0.2s;}
+		.tool:hover{background:rgba(255,255,255,0.06);}
+		.theme-btn{margin-left:auto; padding:8px 10px; border-radius:8px; text-decoration:none; color:inherit; border:1px solid rgba(255,255,255,0.05);}
+		.footer{max-width:1000px; margin:30px auto; color:inherit; opacity:0.7; font-size:13px;}
+	</style>
+</head>
+<body class="{{ theme|default('light') }}">
+	<header class="header">
+		<div class="brand">Vira Sky</div>
+		<nav class="nav" aria-label="Main navigation">
+			<a href="{{ url_for('home') }}" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+			<a href="{{ url_for('chat') }}" class="{% if request.path.startswith('/chat') %}active{% endif %}">Chat</a>
+			<a href="{{ url_for('explore') }}" class="{% if request.path.startswith('/explore') %}active{% endif %}">Explore</a>
+			<a href="{{ url_for('profile') }}" class="{% if request.path.startswith('/profile') %}active{% endif %}">Profile</a>
+			<a href="{{ url_for('settings') }}" class="{% if request.path.startswith('/settings') %}active{% endif %}">Settings</a>
+		</nav>
+		<a class="theme-btn" href="{{ url_for('toggle_theme') }}">Toggle {{ 'Dark' if theme=='light' else 'Light' }}</a>
+	</header>
+
+	<main class="container">
+		{% block content %}{% endblock %}
+	</main>
+
+	<footer class="footer">Vira Sky — warm, supportive AI companion • Theme: {{ theme }}</footer>
+</body>
+</html>

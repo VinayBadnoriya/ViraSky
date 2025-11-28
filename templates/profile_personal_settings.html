@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Personal Settings</h2>
+	<p style="opacity:0.9;">Customize notifications, theme and tracking options.</p>
+
+	<form id="personalSettingsForm" onsubmit="return false;" style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">
+		<label><input type="checkbox" id="notifications_enabled" {{ 'checked' if settings.notifications_enabled else '' }}> Enable notifications</label>
+		<label><input type="checkbox" id="daily_affirmation" {{ 'checked' if settings.daily_affirmation else '' }}> Daily affirmation reminder</label>
+		<label><input type="checkbox" id="mood_tracking" {{ 'checked' if settings.mood_tracking else '' }}> Enable mood tracking</label>
+		<label><input type="checkbox" id="avatar_in_chat" {{ 'checked' if settings.avatar_in_chat else '' }}> Show my avatar in chat</label>
+
+		<label>Theme:
+			<select id="theme_select" style="width:100%; padding:6px; margin-top:4px;">
+				<option value="light" {% if settings.theme=='light' %}selected{% endif %}>Light (Sky Blue)</option>
+				<option value="dark" {% if settings.theme=='dark' %}selected{% endif %}>Dark (Royal Purple)</option>
+			</select>
+		</label>
+
+		<div>
+			<button onclick="savePersonalSettings()" style="padding:8px 12px;">Save Settings</button>
+			<span id="personalSettingsMsg" style="margin-left:8px; opacity:0.85;"></span>
+		</div>
+	</form>
+</div>
+
+<script>
+async function savePersonalSettings(){
+	const payload = {
+		notifications_enabled: document.getElementById('notifications_enabled').checked,
+		daily_affirmation: document.getElementById('daily_affirmation').checked,
+		mood_tracking: document.getElementById('mood_tracking').checked,
+		avatar_in_chat: document.getElementById('avatar_in_chat').checked,
+		theme: document.getElementById('theme_select').value
+	};
+	const resp = await fetch('/api/profile/personal-settings', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+	const data = await resp.json();
+	document.getElementById('personalSettingsMsg').textContent = data.message || 'Saved';
+}
+</script>
+{% endblock %}

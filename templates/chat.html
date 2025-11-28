@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vira Sky – Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<!-- CHAT NAVIGATION (OPTIONAL – same as home) -->
+<nav class="nav">
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a class="active" href="/chat">Chat</a></li>
+
+        <li class="dropdown">
+            <a href="#">Explore ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Advice Categories</a></li>
+                <li><a href="#">Journals</a></li>
+                <li><a href="#">Affirmations</a></li>
+                <li><a href="#">Exercises</a></li>
+                <li><a href="#">Avatar Generation</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">Profile ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="#">User Data</a></li>
+                <li><a href="#">Preferences</a></li>
+                <li><a href="#">Personal Settings</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">Settings ▾</a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Safety</a></li>
+                <li><a href="#">18+ Controls</a></li>
+                <li><a href="#">App Behavior Settings</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<!-- CHAT SECTION -->
+<div class="chat-container">
+
+    <!-- Vira Message -->
+    <div class="message ai-message">
+        Hello, I’m Vira Sky. How are you feeling today?
+    </div>
+
+    <!-- User Example Message -->
+    <div class="message user-message">
+        I am stressed today.
+    </div>
+
+    <!-- Typing Animation -->
+    <div class="typing-bubble" id="typing">
+        Vira Sky is typing...
+    </div>
+
+</div>
+
+<!-- INPUT AREA -->
+<div class="input-area">
+    <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+function sendMessage() {
+    let input = document.getElementById("userInput");
+    let msg = input.value.trim();
+    if(msg === "") return;
+
+    // Create user message bubble
+    let userDiv = document.createElement("div");
+    userDiv.className = "message user-message";
+    userDiv.textContent = msg;
+    document.querySelector(".chat-container").appendChild(userDiv);
+
+    input.value = "";
+
+    // Show typing animation
+    document.getElementById("typing").style.display = "block";
+
+    // Simulated AI reply
+    setTimeout(() => {
+        document.getElementById("typing").style.display = "none";
+        
+        let aiDiv = document.createElement("div");
+        aiDiv.className = "message ai-message";
+        aiDiv.textContent = "Thank you for sharing. Tell me more.";
+        document.querySelector(".chat-container").appendChild(aiDiv);
+    }, 1000);
+}
+
+async function sendMessage(){
+	const msg = document.getElementById('msg').value;
+	if(!msg) return;
+	const resBox = document.getElementById('responses');
+	resBox.textContent += "\\nYou: " + msg + "\\n";
+	// call backend API (placeholder)
+	const resp = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})});
+	const data = await resp.json();
+	resBox.textContent += "Vira Sky: " + (data.reply||'[no reply]') + "\\n";
+	document.getElementById('msg').value = '';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Explore Tools</h2>
+	<p style="opacity:0.9;">All self-development and emotional wellness tools, integrated with Vira Sky's AI core.</p>
+
+	<div class="grid" style="margin-top:12px;">
+		<a class="tool" href="{{ url_for('explore_advice') }}" style="display:block;">
+			<strong>Advice Categories</strong>
+			<div style="opacity:0.8;">Curated guidance topics from the Relationship Engine</div>
+		</a>
+		<a class="tool" href="{{ url_for('explore_journals') }}" style="display:block;">
+			<strong>Journals</strong>
+			<div style="opacity:0.8;">Write entries and get summaries & insights</div>
+		</a>
+		<a class="tool" href="{{ url_for('explore_affirmations') }}" style="display:block;">
+			<strong>Affirmations</strong>
+			<div style="opacity:0.8;">Personalized daily affirmations</div>
+		</a>
+		<a class="tool" href="{{ url_for('explore_exercises') }}" style="display:block;">
+			<strong>Exercises</strong>
+			<div style="opacity:0.8;">AI-guided bonding & self-growth activities</div>
+		</a>
+		<a class="tool" href="{{ url_for('explore_avatar') }}" style="display:block;">
+			<strong>Avatar Generation</strong>
+			<div style="opacity:0.8;">Upload photo and create stylized avatars</div>
+		</a>
+	</div>
+</div>
+{% endblock %}

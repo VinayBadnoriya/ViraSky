@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">{{ category.title }}</h2>
+	<p style="opacity:0.9;">{{ category.tagline }}</p>
+
+	<div style="display:flex; gap:12px; align-items:center; margin-top:8px;">
+		<label>Tone:
+			<select id="tone">
+				<option value="soft" {% if prefs.tone=='soft' %}selected{% endif %}>Soft</option>
+				<option value="friendly" {% if prefs.tone=='friendly' %}selected{% endif %}>Friendly</option>
+				<option value="coach" {% if prefs.tone=='coach' %}selected{% endif %}>Coach</option>
+			</select>
+		</label>
+		<label>Depth:
+			<select id="depth">
+				<option value="short" {% if prefs.depth=='short' %}selected{% endif %}>Short</option>
+				<option value="medium" {% if prefs.depth=='medium' %}selected{% endif %}>Medium</option>
+				<option value="deep" {% if prefs.depth=='deep' %}selected{% endif %}>Deep</option>
+			</select>
+		</label>
+		<button onclick="requestAdvice()" style="padding:8px 12px;">Get Advice</button>
+	</div>
+
+	<div style="margin-top:16px;">
+		<h4 style="margin-bottom:6px;">Personalized Advice</h4>
+		<pre id="advice_main" style="white-space:pre-wrap; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+
+		<h4 style="margin-top:12px;">Step-by-step Actions</h4>
+		<pre id="advice_steps" style="white-space:pre-wrap; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+
+		<h4 style="margin-top:12px;">Emotional Explanation</h4>
+		<pre id="advice_emotion" style="white-space:pre-wrap; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+
+		<h4 style="margin-top:12px;">Scenario Insights</h4>
+		<pre id="advice_scenarios" style="white-space:pre-wrap; padding:10px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+	</div>
+</div>
+
+<script>
+async function requestAdvice(){
+	const tone = document.getElementById('tone').value;
+	const depth = document.getElementById('depth').value;
+	const category = "{{ category.title }}";
+	// Compose a structured prompt for the Relationship Engine + Emotional Insight integration
+	const prompt = `
+You are Vira Sky, a warm, empathetic relationship & life advisor.
+User preference: tone=${tone}, depth=${depth}.
+Topic: ${category}.
+Provide:
+1) A concise personalized advice summary.
+2) 3 step-by-step actions the user can take.
+3) An emotional explanation of underlying feelings.
+4) 2 scenario insights (what to say/do in common situations).
+Keep language supportive and non-judgmental.
+`;
+	// UI feedback
+	document.getElementById('advice_main').textContent = 'Generating...';
+	document.getElementById('advice_steps').textContent = '';
+	document.getElementById('advice_emotion').textContent = '';
+	document.getElementById('advice_scenarios').textContent = '';
+
+	const resp = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:prompt, preferences:{tone,depth}})});
+	const data = await resp.json();
+	const text = data.reply || '';
+	// Naive split heuristic: user can refine splitting in prod by returning JSON from AI
+	const parts = text.split('\\n\\n');
+	document.getElementById('advice_main').textContent = parts[0] || text;
+	document.getElementById('advice_steps').textContent = parts[1] || '';
+	document.getElementById('advice_emotion').textContent = parts[2] || '';
+	document.getElementById('advice_scenarios').textContent = parts[3] || '';
+}
+</script>
+{% endblock %}

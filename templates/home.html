@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card hero">
+	<div>
+		<h1 style="margin:0 0 8px 0;">Hello — I'm Vira Sky</h1>
+		<p style="margin:0 0 12px 0; opacity:0.9;">Your warm, futuristic relationship & life advice companion.</p>
+		<p style="margin:0;"><a href="{{ url_for('chat') }}">Start Chat</a> · <a href="{{ url_for('explore') }}">Explore Tools</a></p>
+	</div>
+	<div style="min-width:220px; text-align:right;">
+		<div style="font-size:13px; opacity:0.85;">Daily Affirmation</div>
+		<div style="margin-top:8px; font-weight:600;">"You are allowed to grow. Breathe."</div>
+	</div>
+</div>
+
+<div style="height:16px;"></div>
+
+<div class="card">
+	<h3 style="margin-top:0;">Explore quick tools</h3>
+	<div class="grid">
+		<div class="tool"><strong>Advice Categories</strong><div style="opacity:0.8;">Relationship, Communication, Breakups</div></div>
+		<div class="tool"><strong>Journals</strong><div style="opacity:0.8;">Write & reflect</div></div>
+		<div class="tool"><strong>Affirmations</strong><div style="opacity:0.8;">Morning & Night</div></div>
+		<div class="tool"><strong>Exercises</strong><div style="opacity:0.8;">Bonding & Mindfulness</div></div>
+		<div class="tool"><strong>Avatar</strong><div style="opacity:0.8;">Generate your aesthetic avatar</div></div>
+	</div>
+</div>
+{% endblock %}

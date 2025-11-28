@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Affirmations</h2>
+	<p style="opacity:0.9;">Generate a short, supportive affirmation personalized by mood.</p>
+
+	<div style="display:flex; gap:8px; align-items:center;">
+		<select id="moodSelect">
+			<option value="neutral">Neutral</option>
+			<option value="calm">Calm</option>
+			<option value="anxious">Anxious</option>
+			<option value="sad">Sad</option>
+			<option value="happy">Happy</option>
+		</select>
+		<button onclick="getAffirmation()" style="padding:8px 12px;">Generate</button>
+	</div>
+
+	<div style="margin-top:12px;">
+		<pre id="affirmBox" style="white-space:pre-wrap; padding:12px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+	</div>
+</div>
+
+<script>
+async function getAffirmation(){
+	const mood = document.getElementById('moodSelect').value;
+	document.getElementById('affirmBox').textContent = 'Generating...';
+	const resp = await fetch('/api/affirmation?mood=' + encodeURIComponent(mood));
+	const data = await resp.json();
+	document.getElementById('affirmBox').textContent = data.affirmation || '[No affirmation]';
+}
+</script>
+{% endblock %}

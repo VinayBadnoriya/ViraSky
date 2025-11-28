@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+	<h2 style="margin-top:0;">Avatar Generation</h2>
+	<p style="opacity:0.9;">Upload a photo and select a style to generate an AI avatar.</p>
+
+	<form id="avatarForm" enctype="multipart/form-data" onsubmit="return uploadAvatar(event)">
+		<input type="file" name="file" accept="image/*" required />
+		<select name="style" id="styleSelect" style="margin-left:8px;">
+			{% for s in styles %}
+			<option value="{{ s }}">{{ s }}</option>
+			{% endfor %}
+		</select>
+		<button type="submit" style="margin-left:8px;">Upload & Generate</button>
+	</form>
+
+	<div style="margin-top:12px;">
+		<pre id="avatarResult" style="white-space:pre-wrap; padding:12px; border-radius:8px; background:rgba(0,0,0,0.03)"></pre>
+	</div>
+</div>
+
+<script>
+async function uploadAvatar(e){
+	e.preventDefault();
+	const form = document.getElementById('avatarForm');
+	const fd = new FormData(form);
+	document.getElementById('avatarResult').textContent = 'Uploading...';
+	const resp = await fetch('/api/avatar', {method:'POST', body:fd});
+	const data = await resp.json();
+	if(data.error) document.getElementById('avatarResult').textContent = 'Error: ' + data.error;
+	else document.getElementById('avatarResult').textContent = 'Uploaded: ' + (data.file || '') + '\\nStyle: ' + (data.style || '');
+}
+</script>
+{% endblock %}
